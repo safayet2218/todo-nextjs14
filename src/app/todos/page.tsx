@@ -1,6 +1,9 @@
 "use client";
 import React, { useEffect, useState } from 'react'
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 interface Todo {
   id: string;
   desc: string;
@@ -29,13 +32,15 @@ export default function Todos() {
       };
       
       const resp = await axios.post("/api/todos", data);
-      
-      setTodos(resp.data.allTodos)
+      toast(resp.data.msg);
+      setTodos(resp.data.allTodos);
+      setInputText("")
     }
 
     async function clearTodos(){
       const resp = await axios.delete("/api/todos");
 
+      toast(resp.data.msg);
       setTodos([]);
     }
 
@@ -43,6 +48,8 @@ export default function Todos() {
       const id = todo.id;
 
       const resp = await axios.delete(`/api/todos/${id}`);
+      toast(resp.data.msg);
+      setTodos(resp.data.allTodos);
     }
 
     async function editTodo(todo:Todo) {
@@ -64,7 +71,7 @@ export default function Todos() {
       const resp = await axios.put(`/api/todos/${editTodoInfo.id}`, data);
       
       setEditMode(false);
-      
+      toast(resp.data.msg);
       setTodos(resp.data.allTodos);
     }
 
@@ -73,6 +80,7 @@ export default function Todos() {
       return (
         <div className="flex flex-col items-center gap-8 pt-8 bg-violet-200 pb-32">
           <div className="text-2xl">Edit Todo</div>
+          <ToastContainer />
           <div className="flex gap-4">
             <div className="text-lg">Edit desc:</div>
             <input className="rounded-md shadow-md text-lg" type="text" placeholder="Enter new desc" value={editTodoInfo.desc} onChange={e=>setEditTodoInfo({...editTodoInfo, desc:e.target.value})}/>
@@ -91,9 +99,10 @@ export default function Todos() {
   return (
     <div className="flex flex-col items-center gap-8 pt-8 bg-violet-200 pb-32">
         <div className="text-2xl">Todo List </div>
+        <ToastContainer />
         <div className="flex gap-2">
             <input 
-              className="text-xl rounded-md shadow-md"
+              className="text-xl rounded-md shadow-md p-2"
               type="text" placeholder="Enter todo" value={inputText} onChange={e => setInputText(e.target.value)}/>
             <button className="text-xl shadow-md bg-blue-600 text-white hover:bg-blue-500 rounded-md px-3 py-1" onClick={addTodo}>Add</button>
             <button className="text-xl shadow-md bg-gray-600 text-white hover:bg-gray-500 rounded-md px-3 py-1" onClick={clearTodos}>Clear</button>

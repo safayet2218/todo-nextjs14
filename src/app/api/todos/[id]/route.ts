@@ -31,7 +31,9 @@ export async function DELETE(request:NextRequest){
 
         await Todo.deleteOne({id});
 
-        return NextResponse.json({msg:"Todo is deleted successfully!", success:true});
+        const allTodos = await Todo.find({});
+        
+        return NextResponse.json({msg:"Todo is deleted successfully!", success:true, allTodos});
         
     }catch(error){
         return NextResponse.json({msg:"Issue Happened!"});
