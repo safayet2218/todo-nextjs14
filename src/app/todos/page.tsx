@@ -102,7 +102,7 @@ export default function Todos() {
           <ToastContainer />
           <div className="flex gap-4">
             <div className="text-lg">Edit desc:</div>
-            <input className="rounded-md shadow-md text-lg" type="text" placeholder="Enter new desc" value={editTodoInfo.desc} onChange={e=>setEditTodoInfo({...editTodoInfo, desc:e.target.value})}/>
+            <input className="rounded-md shadow-md text-lg p-2" type="text" placeholder="Enter new desc" value={editTodoInfo.desc} onChange={e=>setEditTodoInfo({...editTodoInfo, desc:e.target.value})}/>
           </div>
           <div className="flex gap-4">
             <div className="text-lg">Edit completed:</div>
