@@ -4,11 +4,19 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 interface Todo {
   id: string;
   desc: string;
   completed: boolean;
 }
+
+interface ChangeTodoStatusResponse {
+  msg: string;
+  success: boolean;
+  allTodos?: any[]; // Optional property
+}
+
 export default function Todos() {
     const [inputText, setInputText] =useState("");
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -74,6 +82,17 @@ export default function Todos() {
       toast(resp.data.msg);
       setTodos(resp.data.allTodos);
     }
+    async function changeStatus(todo:Todo){
+
+      const data = {
+        id: todo.id,
+        completed: !todo.completed
+      }
+
+      const resp = await axios.post(`/api/todos/status-update`, data);
+      toast(resp.data.msg);
+      setTodos(resp.data.allTodos);
+    }
 
     if(editMode)
     {
@@ -112,7 +131,7 @@ export default function Todos() {
             return(
               <div className="bg-violet-600 flex justify-between items-center p-2 rounded-lg shadow-md mt-2">
                 <div className="flex gap-2">
-                  <input type="checkbox" checked={todo.completed}/>
+                  <input type="checkbox" checked={todo.completed} onChange={() => changeStatus(todo)} />
                   <div className="text-lg text-white">{todo.desc} </div>
                 </div>
                 <div className="flex gap-2">
