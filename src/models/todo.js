@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import { unique } from "next/dist/build/utils";
-import { type } from "os";
 
 const TodoSchema = new mongoose.Schema({
     id:{
